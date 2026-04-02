@@ -2,11 +2,14 @@ class Author:
     all = []
 
     def __init__(self, name):
-        # Validation to ensure name is a string
         if not isinstance(name, str) or len(name) == 0:
             raise Exception("Name must be a non-empty string")
-        self.name = name
+        self._name = name
         Author.all.append(self)
+
+    @property
+    def name(self):
+        return self._name
 
     def contracts(self):
         return [c for c in Contract.all if c.author == self]
@@ -27,8 +30,12 @@ class Book:
     def __init__(self, title):
         if not isinstance(title, str) or len(title) == 0:
             raise Exception("Title must be a non-empty string")
-        self.title = title
+        self._title = title
         Book.all.append(self)
+
+    @property
+    def title(self):
+        return self._title
 
     def contracts(self):
         return [c for c in Contract.all if c.book == self]
@@ -41,15 +48,15 @@ class Contract:
     all = []
 
     def __init__(self, author, book, date, royalties):
-        # Validation checks
+        # Validation for instances and types
         if not isinstance(author, Author):
-            raise Exception("Invalid author")
+            raise Exception("author must be an Author instance")
         if not isinstance(book, Book):
-            raise Exception("Invalid book")
+            raise Exception("book must be a Book instance")
         if not isinstance(date, str):
-            raise Exception("Invalid date")
+            raise Exception("date must be a string")
         if not isinstance(royalties, int):
-            raise Exception("Invalid royalties")
+            raise Exception("royalties must be an integer")
 
         self.author = author
         self.book = book
